@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>胸部创伤 · 影像急诊室</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #0a1220;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+            color: #e0f2fe;
+        }
+        .app {
+            max-width: 1100px;
+            width: 100%;
+            background: linear-gradient(160deg, #0d1b2a 0%, #1b2d40 100%);
+            border-radius: 28px;
+            padding: 20px 18px 26px;
+            box-shadow: 0 30px 50px -15px #000, inset 0 1px 2px #ffffff10;
+            border: 1px solid #2a4055;
+        }
+        h1 {
+            font-size: 1.4rem;
+            text-align: center;
+            letter-spacing: 1.5px;
+            color: #b3e5fc;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+        h1 small {
+            font-size: 0.75rem;
+            background: #1e3a4f;
+            padding: 3px 10px;
+            border-radius: 40px;
+            font-weight: 400;
+            color: #90caf9;
+        }
+        .subhead {
+            text-align: center;
+            color: #6b8aa8;
+            font-size: 0.8rem;
+            margin-bottom: 16px;
+            border-bottom: 1px dashed #1e364a;
+            padding-bottom: 10px;
+        }
+
+        .login-box {
+            background: #0f1f2e;
+            border-radius: 24px;
+            padding: 24px 16px;
+            text-align: center;
+            border: 1px solid #1f3a4f;
+        }
+        .login-box label {
+            font-size: 1.1rem;
+            color: #b0d4f0;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .login-box input {
+            width: 150px;
+            padding: 12px 16px;
+            font-size: 1.8rem;
+            text-align: center;
+            letter-spacing: 6px;
+            font-weight: 700;
+            background: #0a1a26;
+            border: 2px solid #2e4b6e;
+            border-radius: 20px;
+            color: #b3e5fc;
+            outline: none;
+            caret-color: #4fc3f7;
+        }
+        .login-box input:focus {
+            border-color: #4fc3f7;
+            box-shadow: 0 0 16px #1976d2;
+        }
+        .btn {
+            background: #1e4b6e;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 36px;
+            color: #e3f2fd;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 0 #0b1a2e, 0 7px 14px #00000066;
+            border: 1px solid #3d6b92;
+            margin-top: 14px;
+        }
+        .btn:hover {
+            background: #25638b;
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #0b1a2e;
+        }
+        .btn.small {
+            padding: 9px 18px;
+            font-size: 0.9rem;
+            box-shadow: 0 3px 0 #0b1a2e;
+        }
+        .btn.ghost {
+            background: transparent;
+            border: 1px solid #3d6b92;
+            box-shadow: none;
+            color: #90caf9;
+        }
+        .btn.ghost:hover { background: #1a2d40; }
+        .error-msg {
+            color: #ff8a80;
+            min-height: 20px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        .game-area { display: none; }
+        .game-area.active { display: block; }
+
+        .progress-bar {
+            height: 6px;
+            background: #1b2f44;
+            border-radius: 20px;
+            margin: 4px 0 14px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4fc3f7, #7e57c2);
+            border-radius: 20px;
+            transition: width 0.4s ease;
+        }
+        .q-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #8aa9c9;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+
+        .scene-row {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .visual-panel {
+            flex: 1 1 380px;
+            min-height: 300px;
+            background: #0a1a26;
+            border-radius: 24px;
+            border: 1px solid #1f3e57;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            position: relative;
+        }
+        .question-panel {
+            flex: 1 1 340px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scene-title {
+            color: #6b8aa8;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .canvas-wrap {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+        #animCanvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #0f1f2e;
+            border-radius: 16px;
+            border: 1px solid #1e364a;
+        }
+        /* 热点题按钮 */
+        .hotspot-btn {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(79, 195, 247, 0.25);
+            border: 2px solid #4fc3f7;
+            cursor: pointer;
+            transform: translate(-50%, -50%);
+            transition: 0.2s;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #4fc3f7;
+            animation: pulseHot 1.5s ease-in-out infinite;
+        }
+        .hotspot-btn:hover {
+            background: rgba(79, 195, 247, 0.5);
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+        .hotspot-btn.correct {
+            background: rgba(46, 204, 113, 0.5);
+            border-color: #2ecc71;
+            animation: none;
+            pointer-events: none;
+        }
+        .hotspot-btn.wrong {
+            background: rgba(231, 76, 60, 0.5);
+            border-color: #e74c3c;
+            animation: none;
+            pointer-events: none;
+        }
+        @keyframes pulseHot {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+            50% { transform: translate(-50%, -50%) scale(1.12); opacity: 1; }
+        }
+
+        /* 拖拽标记 */
+        .drag-label {
+            position: absolute;
+            padding: 8px 16px;
+            background: #1e4b6e;
+            border: 2px solid #4fc3f7;
+            border-radius: 30px;
+            color: #e3f2fd;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: grab;
+            z-index: 25;
+            touch-action: none;
+            user-select: none;
+            box-shadow: 0 4px 12px #00000066;
+            transition: box-shadow 0.15s;
+        }
+        .drag-label:active {
+            cursor: grabbing;
+            box-shadow: 0 8px 20px #4fc3f766;
+        }
+        .drop-target {
+            position: absolute;
+            border: 2px dashed #ffb74d;
+            border-radius: 12px;
+            background: rgba(255, 183, 77, 0.08);
+            z-index: 15;
+            transition: 0.2s;
+            pointer-events: none;
+        }
+        .drop-target.hover {
+            background: rgba(255, 183, 77, 0.25);
+            border-color: #ffd54f;
+        }
+        .drop-target.filled {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: #2ecc71;
+            border-style: solid;
+        }
+
+        .visual-hint {
+            color: #90a4ae;
+            font-size: 0.75rem;
+            margin-top: 10px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #f0f7ff;
+            background: #0b1e2d;
+            padding: 14px 16px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            border-left: 5px solid #4fc3f7;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .option-btn {
+            background: #122c3e;
+            border: 1.5px solid #2c4b68;
+            padding: 12px 16px;
+            border-radius: 36px;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #d4e7ff;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .option-btn:hover:not(:disabled) {
+            background: #1d425c;
+            border-color: #4fc3f7;
+        }
+        .option-btn.correct {
+            background: #1b4d3b;
+            border-color: #2ecc71;
+            color: #d5f5e3;
+        }
+        .option-btn.wrong {
+            background: #5a1f1f;
+            border-color: #e74c3c;
+            color: #fadbd8;
+        }
+        .option-btn:disabled { cursor: not-allowed; opacity: 0.8; }
+        .option-prefix {
+            font-weight: 700;
+            background: #1f3a4f;
+            width: 26px; height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            color: #aad4ff;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .feedback {
+            margin-top: 6px;
+            font-size: 0.85rem;
+            padding: 10px 14px;
+            border-radius: 14px;
+            background: #0d1f2c;
+            color: #b0d4f0;
+            border-left: 4px solid #4fc3f7;
+            display: none;
+        }
+        .feedback.show { display: block; }
+        .next-btn-wrap {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .sort-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sort-item {
+            background: #122c3e;
+            border: 1.5px solid #2c4b68;
+            padding: 10px 14px;
+            border-radius: 14px;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.15s;
+            user-select: none;
+            font-size: 0.9rem;
+        }
+        .sort-item:active { cursor: grabbing; }
+        .sort-item.dragging { opacity: 0.4; }
+        .sort-item.drag-over { border-color: #4fc3f7; background: #1d425c; }
+        .sort-item .handle {
+            color: #4fc3f7;
+            font-size: 1.1rem;
+            cursor: grab;
+            padding: 0 2px;
+        }
+        .sort-item .num {
+            background: #1f3a4f;
+            width: 24px; height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 30px;
+            color: #aad4ff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .match-container {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .match-col {
+            flex: 1;
+            min-width: 120px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .match-item {
+            background: #122c3e;
+            border: 1.5px solid #2c4b68;
+            padding: 10px 14px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.15s;
+            text-align: center;
+            font-size: 0.85rem;
+            user-select: none;
+        }
+        .match-item:hover { border-color: #4fc3f7; }
+        .match-item.selected {
+            background: #1d425c;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 12px #4fc3f7aa;
+        }
+        .match-item.matched {
+            background: #1b4d3b;
+            border-color: #2ecc71;
+            opacity: 0.7;
+            cursor: default;
+        }
+        .match-item.matched.wrong-match {
+            background: #5a1f1f;
+            border-color: #e74c3c;
+        }
+        .match-status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #90caf9;
+        }
+
+        .leaderboard { display: none; }
+        .leaderboard.active { display: block; }
+        .rank-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #bbdefb;
+            padding: 0 6px 8px;
+            border-bottom: 1px solid #1e364a;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .teacher-stats {
+            background: #1a2c3b;
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin: 8px 0 14px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border: 1px solid #35658b;
+        }
+        .teacher-stats.show { display: flex; }
+        .teacher-stats span {
+            font-weight: 700;
+            color: #4fc3f7;
+            font-size: 1.1rem;
+            margin-left: 4px;
+        }
+        .rank-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #132433;
+            padding: 10px 14px;
+            border-radius: 36px;
+            font-size: 0.9rem;
+            border: 1px solid #1f3e57;
+        }
+        .rank-item .rank { font-weight: 700; color: #4fc3f7; width: 40px; }
+        .rank-item .sid { font-weight: 600; letter-spacing: 1px; flex: 1; }
+        .rank-item .score { background: #1f4a5e; padding: 3px 12px; border-radius: 36px; font-weight: 600; color: #b3e5fc; font-size: 0.85rem; }
+        .highlight-me { border: 2px solid #4fc3f7; background: #1d3e55; }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #5b7a99;
+            margin-top: 18px;
+        }
+        .hidden { display: none !important; }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .flash { animation: flash 0.6s ease 2; }
+
+        @media (max-width: 700px) {
+            .app { padding: 14px 12px; }
+            h1 { font-size: 1.15rem; }
+            .scene-row { flex-direction: column; gap: 10px; }
+            .visual-panel { min-height: 240px; }
+            .question-text { font-size: 0.9rem; padding: 12px 14px; }
+            .option-btn { font-size: 0.85rem; padding: 10px 14px; }
+            .hotspot-btn { width: 38px; height: 38px; font-size: 1rem; }
+            .drag-label { padding: 6px 12px; font-size: 0.8rem; }
+            .rank-item { font-size: 0.8rem; padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app" id="app">
+    <h1>🩻 胸部创伤 · 影像急诊室 <small>第十一节</small></h1>
+    <div class="subhead">输入两位数学号 · 10道题 · 触屏友好 · 实时排行榜</div>
+
+    <div id="loginBox" class="login-box">
+        <label for="sid">🔢 学号（两位数字）</label>
+        <input type="text" id="sid" maxlength="2" placeholder="00" inputmode="numeric" autocomplete="off">
+        <br>
+        <button class="btn" id="startBtn">开始闯关</button>
+        <button class="btn ghost small" id="teacherBtn" style="margin-left:6px;">👩‍🏫 教师查看</button>
+        <div id="loginError" class="error-msg"></div>
+    </div>
+
+    <div id="gameArea" class="game-area">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="q-meta">
+            <span id="qCounter">第 1 / 10 题</span>
+            <span id="scoreDisplay">得分: 0</span>
+        </div>
+
+        <div class="scene-row">
+            <div class="visual-panel" id="visualPanel">
+                <div class="scene-title" id="sceneTitle">影像动画</div>
+                <div class="canvas-wrap" id="canvasWrap">
+                    <canvas id="animCanvas" width="400" height="300"></canvas>
+                </div>
+                <div class="visual-hint" id="visualHint">观察图像，回答右侧问题</div>
+            </div>
+
+            <div class="question-panel">
+                <div class="question-text" id="questionText">题目加载中...</div>
+                <div id="answerArea"></div>
+                <div id="feedbackArea" class="feedback"></div>
+                <div class="next-btn-wrap">
+                    <button class="btn small hidden" id="nextBtn">下一题 ➡️</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="leaderboardPanel" class="leaderboard">
+        <div class="rank-header">
+            <span>🏆 闯关排行榜</span>
+            <span id="rankTitle">全部学生</span>
+        </div>
+        <div id="teacherStats" class="teacher-stats">
+            <div>👥 参与人数 <span id="totalStudents">0</span></div>
+            <div>✅ 平均正确率 <span id="avgAccuracy">0%</span></div>
+        </div>
+        <div class="rank-list" id="rankList"></div>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
+            <button class="btn small" id="againBtn">🔄 再玩一次</button>
+            <button class="btn ghost small" id="backBtn">🔙 返回登录</button>
+        </div>
+    </div>
+
+    <div class="footer-note">⚕️ 医学影像诊断学 · 胸部创伤 · 课堂互动</div>
+</div>
+
+<script>
+(function() {
+    // ==================== 题库 (10题) ====================
+    const questions = [
+        // 1 选择题
+        {
+            type: 'choice',
+            q: "X线片上，肋骨骨折最典型的直接征象是？",
+            options: ["肋骨走行扭曲", "骨皮质连续性中断", "肋间隙增宽", "胸廓塌陷"],
+            answer: 1,
+            explain: "骨皮质连续性中断是骨折的直接征象。不完全性骨折可表现为骨皮质扭曲或一侧分离，易漏诊。",
+            animType: 'rib_fracture',
+            hint: '动画展示肋骨断裂的X线模拟'
+        },
+        // 2 点击热点题（替换画图）
+        {
+            type: 'hotspot',
+            q: "请点击CT图像上右侧气胸的区域（提示：无肺纹理的透亮区）。",
+            explain: "右侧气胸表现为肺野外带无肺纹理透亮区，肺组织被压缩向肺门。",
+            animType: 'ct_pneumo',
+            hint: '点击CT图上正确的位置',
+            // 热点位置（相对坐标 0-1）
+            hotspots: [
+                { x: 0.78, y: 0.5, correct: true, label: '气胸区' },
+                { x: 0.28, y: 0.5, correct: false, label: '左肺' },
+                { x: 0.5, y: 0.82, correct: false, label: '脊柱' },
+                { x: 0.68, y: 0.52, correct: false, label: '压缩肺' }
+            ]
+        },
+        // 3 排序题
+        {
+            type: 'sort',
+            q: "请按正确的胸部创伤影像诊断流程，将以下步骤排序：",
+            items: [
+                "观察胸廓骨骼（肋骨、锁骨）",
+                "观察肺野（有无气胸、液气胸）",
+                "观察肺实质（有无挫伤、撕裂伤）",
+                "观察膈肌与纵隔（有无膈疝、移位）"
+            ],
+            correctOrder: [0, 1, 2, 3],
+            explain: "系统读片顺序：骨骼 → 胸膜腔 → 肺实质 → 膈肌纵隔，避免漏诊。",
+            animType: 'read_order',
+            hint: '按系统读片顺序排列'
+        },
+        // 4 选择题
+        {
+            type: 'choice',
+            q: "张力性气胸在X线胸片上，提示病情危急的最重要征象是？",
+            options: ["气胸量较大", "伴有肋骨骨折", "纵隔向健侧移位", "皮下气肿"],
+            answer: 2,
+            explain: "纵隔向健侧移位提示胸膜腔压力持续升高，是张力性气胸的危急征象，需紧急处理。",
+            animType: 'tension_pneumo',
+            hint: '动画模拟纵隔移位过程'
+        },
+        // 5 连线题
+        {
+            type: 'match',
+            q: "请将下列影像征象与对应的疾病配对：",
+            leftItems: ["边缘模糊的磨玻璃影", "类圆形气液囊腔", "纵隔向健侧移位", "胸腔内出现胃肠影"],
+            rightItems: ["肺挫伤", "肺撕裂伤", "张力性气胸", "外伤性膈疝"],
+            correctPairs: [0, 1, 2, 3],
+            explain: "磨玻璃影→肺挫伤；气液囊腔→肺撕裂伤；纵隔移位→张力性气胸；胸腔内胃肠影→外伤性膈疝。",
+            animType: 'match_summary',
+            hint: '观察左侧征象，点击配对'
+        },
+        // 6 选择题
+        {
+            type: 'choice',
+            q: "肺挫伤在CT上的典型表现是？",
+            options: ["类圆形气液囊腔", "边缘模糊的磨玻璃样密度影", "胸腔内出现胃肠影", "膈肌连续性中断"],
+            answer: 1,
+            explain: "肺挫伤病理为肺泡内出血和水肿，CT表现为边缘模糊的磨玻璃影或斑片影，不按肺段分布。",
+            animType: 'contusion',
+            hint: '动画展示磨玻璃影的形成'
+        },
+        // 7 选择题
+        {
+            type: 'choice',
+            q: "外伤性膈疝最常发生于哪一侧？",
+            options: ["左侧", "右侧", "双侧均等", "仅发生于右侧"],
+            answer: 0,
+            explain: "左侧膈肌先天薄弱，且右侧有肝脏保护，因此外伤性膈疝多发生于左侧。",
+            animType: 'diaphragm_hernia',
+            hint: '动画展示胃疝入左侧胸腔'
+        },
+        // 8 排序题
+        {
+            type: 'sort',
+            q: "对于怀疑肋骨骨折但X线平片阴性的患者，以下检查的推荐顺序是？",
+            items: [
+                "胸部X线平片（已做，阴性）",
+                "胸部CT平扫 + 三维骨重建",
+                "胸部MRI",
+                "全身骨扫描"
+            ],
+            correctOrder: [0, 1, 2, 3],
+            explain: "X线平片阴性但仍怀疑骨折时，首选胸部CT平扫+三维重建，可发现隐匿性骨折。MRI对骨折显示不如CT，骨扫描不用于急诊。",
+            animType: 'ct_reconstruction',
+            hint: '按临床推荐优先级排列'
+        },
+        // 9 选择题
+        {
+            type: 'choice',
+            q: "肺撕裂伤与肺挫伤最特征性的影像鉴别点是？",
+            options: ["病灶的分布范围", "病灶的密度", "是否伴有肋骨骨折", "是否形成气液囊腔或肺血肿"],
+            answer: 3,
+            explain: "肺撕裂伤形成含气或气液的囊腔（创伤性肺囊肿）或完全被血液填充的类圆形血肿，这是与弥漫性渗出的肺挫伤的本质区别。",
+            animType: 'laceration',
+            hint: '动画展示气液囊腔的形成'
+        },
+        // 10 拖拽标记题（替换画图）
+        {
+            type: 'drag',
+            q: "请将下方的「液平」标签拖到CT图像上液气胸的液平位置。",
+            explain: "液气胸可见气液平面，上方为气体，下方为液体。CT上表现为胸腔内水平分界的液性密度区。",
+            animType: 'ct_hydro',
+            hint: '拖动标签到正确位置',
+            // 目标区域（相对坐标）
+            targetRegion: { x: 0.68, y: 0.5, width: 0.22, height: 0.12 },
+            labelText: '液平'
+        }
+    ];
+
+    // ==================== 状态 ====================
+    let currentStudentId = '';
+    let currentQIndex = 0;
+    let currentScore = 0;
+    let answeredCurrent = false;
+    let userAnswers = [];
+    let totalQuestions = questions.length;
+
+    let animFrame = null;
+    let animTime = 0;
+
+    // 排序
+    let sortOrder = [];
+
+    // 连线
+    let selectedLeft = null;
+    let matchedPairs = new Set();
+
+    // 热点
+    let hotspotElements = [];
+
+    // 拖拽
+    let dragLabelEl = null;
+    let dropTargetEl = null;
+    let dragStartPos = null;
+    let isDragging = false;
+
+    const STORAGE_KEY = 'chest_trauma_game_v5';
+
+    // ==================== 数据 ====================
+    function loadRecords() {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+        catch(e) { return []; }
+    }
+    function saveRecord(sid, correct, total) {
+        const records = loadRecords();
+        const idx = records.findIndex(r => r.studentId === sid);
+        const rec = { studentId: sid, correct, total, timestamp: Date.now() };
+        if (idx !== -1) records[idx] = rec; else records.push(rec);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    }
+    function getSortedRecords() {
+        return loadRecords()
+            .filter(r => r.studentId !== '00')
+            .sort((a, b) => b.correct - a.correct || a.timestamp - b.timestamp);
+    }
+
+    // ==================== DOM ====================
+    const loginBox = document.getElementById('loginBox');
+    const gameArea = document.getElementById('gameArea');
+    const leaderboardPanel = document.getElementById('leaderboardPanel');
+    const sidInput = document.getElementById('sid');
+    const startBtn = document.getElementById('startBtn');
+    const teacherBtn = document.getElementById('teacherBtn');
+    const loginError = document.getElementById('loginError');
+
+    const progressFill = document.getElementById('progressFill');
+    const qCounter = document.getElementById('qCounter');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const questionText = document.getElementById('questionText');
+    const answerArea = document.getElementById('answerArea');
+    const feedbackArea = document.getElementById('feedbackArea');
+    const nextBtn = document.getElementById('nextBtn');
+    const sceneTitle = document.getElementById('sceneTitle');
+    const visualHint = document.getElementById('visualHint');
+    const canvas = document.getElementById('animCanvas');
+    const ctx = canvas.getContext('2d');
+    const canvasWrap = document.getElementById('canvasWrap');
+
+    const rankList = document.getElementById('rankList');
+    const rankTitle = document.getElementById('rankTitle');
+    const teacherStats = document.getElementById('teacherStats');
+    const totalStudentsSpan = document.getElementById('totalStudents');
+    const avgAccuracySpan = document.getElementById('avgAccuracy');
+    const againBtn = document.getElementById('againBtn');
+    const backBtn = document.getElementById('backBtn');
+
+    // ==================== 动画 ====================
+    function stopAnimation() {
+        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+        // 清除热点和拖拽元素
+        hotspotElements.forEach(el => el.remove());
+        hotspotElements = [];
+        if (dragLabelEl) { dragLabelEl.remove(); dragLabelEl = null; }
+        if (dropTargetEl) { dropTargetEl.remove(); dropTargetEl = null; }
+    }
+
+    function drawBackground(w, h) {
+        ctx.clearRect(0, 0, w, h);
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, '#0a1a26');
+        grad.addColorStop(1, '#122a3a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+        ctx.strokeStyle = '#1e364a';
+        ctx.lineWidth = 0.5;
+        for (let i = 0; i < w; i += 20) {
+            ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke();
+        }
+        for (let i = 0; i < h; i += 20) {
+            ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke();
+        }
+    }
+
+    function drawRibFracture(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = '#b0c4de';
+        ctx.lineCap = 'round';
+        for (let row = 0; row < 3; row++) {
+            const yBase = 80 + row * 60;
+            for (let col = 0; col < 5; col++) {
+                const x = 60 + col * 70;
+                const y = yBase + Math.sin(col * 1.2 + t * 0.002) * 8;
+                ctx.beginPath();
+                if (row === 1 && col === 2) {
+                    ctx.moveTo(x - 20, y - 4);
+                    ctx.lineTo(x - 5, y - 2);
+                    ctx.moveTo(x + 10, y + 6);
+                    ctx.lineTo(x + 25, y + 8);
+                    ctx.save();
+                    ctx.shadowColor = '#ff5252';
+                    ctx.shadowBlur = 15;
+                    ctx.strokeStyle = '#ff5252';
+                    ctx.beginPath();
+                    ctx.arc(x + 2, y + 2, 12, 0, Math.PI * 2);
+                    ctx.stroke();
+                    ctx.restore();
+                } else {
+                    ctx.moveTo(x - 20, y);
+                    ctx.lineTo(x + 25, y + 2);
+                }
+                ctx.stroke();
+            }
+        }
+        ctx.fillStyle = '#ff5252';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('骨折', 220, 160);
+        const alpha = 0.5 + 0.5 * Math.sin(t * 0.01);
+        ctx.globalAlpha = alpha;
+        ctx.beginPath();
+        ctx.moveTo(220, 170);
+        ctx.lineTo(240, 180);
+        ctx.lineTo(235, 168);
+        ctx.fillStyle = '#ff5252';
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    }
+
+    function drawTensionPneumo(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        const heartOffset = Math.sin(t * 0.008) * 30;
+        ctx.fillStyle = '#1e3a4f';
+        ctx.fillRect(220, 40, 160, 220);
+        ctx.fillStyle = '#2e5a7a';
+        ctx.beginPath();
+        ctx.ellipse(100, 150, 40, 90, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#2e5a7a';
+        ctx.beginPath();
+        ctx.ellipse(200 + heartOffset * 0.3, 150, 40, 90, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#8b2e2e';
+        ctx.beginPath();
+        ctx.ellipse(170 + heartOffset, 150, 30, 55, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffb74d';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(160, 110);
+        ctx.lineTo(190 + heartOffset, 110);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(190 + heartOffset, 110);
+        ctx.lineTo(183 + heartOffset, 102);
+        ctx.lineTo(183 + heartOffset, 118);
+        ctx.fillStyle = '#ffb74d';
+        ctx.fill();
+        ctx.fillStyle = '#ffb74d';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('纵隔移位', 200, 80);
+        ctx.fillStyle = '#90caf9';
+        ctx.fillText('气胸', 280, 60);
+    }
+
+    // CT气胸（用于热点题）
+    function drawCTPneumo(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        // 胸廓
+        ctx.strokeStyle = '#b0c4de';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.ellipse(200, 150, 170, 120, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        // 脊柱
+        ctx.fillStyle = '#8b9dc3';
+        ctx.beginPath();
+        ctx.arc(200, 250, 20, 0, Math.PI * 2);
+        ctx.fill();
+        // 左肺（正常）
+        ctx.fillStyle = '#1e3a4f';
+        ctx.beginPath();
+        ctx.ellipse(110, 150, 60, 80, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 右肺（被压缩）
+        ctx.fillStyle = '#2e5a7a';
+        ctx.beginPath();
+        ctx.ellipse(270, 160, 35, 60, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 右侧气胸区域（透亮）
+        ctx.fillStyle = '#0a1a26';
+        ctx.beginPath();
+        ctx.ellipse(310, 150, 45, 90, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 标注
+        ctx.fillStyle = '#4fc3f7';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('R', 340, 40);
+        ctx.fillText('L', 40, 40);
+        // 心跳
+        ctx.strokeStyle = '#4fc3f7';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(200, 230);
+        ctx.lineTo(210, 220);
+        ctx.lineTo(220, 235);
+        ctx.lineTo(230, 210);
+        ctx.lineTo(240, 230);
+        ctx.stroke();
+    }
+
+    // CT液气胸（用于拖拽题）
+    function drawCTHydro(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        // 胸廓
+        ctx.strokeStyle = '#b0c4de';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.ellipse(200, 150, 170, 120, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        // 脊柱
+        ctx.fillStyle = '#8b9dc3';
+        ctx.beginPath();
+        ctx.arc(200, 250, 20, 0, Math.PI * 2);
+        ctx.fill();
+        // 左肺
+        ctx.fillStyle = '#1e3a4f';
+        ctx.beginPath();
+        ctx.ellipse(110, 150, 60, 80, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 右肺压缩
+        ctx.fillStyle = '#2e5a7a';
+        ctx.beginPath();
+        ctx.ellipse(270, 130, 35, 50, 0, 0, Math.PI * 2);
+        ctx.fill();
+        // 右侧液气胸：气体 + 液体
+        ctx.fillStyle = '#0a1a26';
+        ctx.fillRect(280, 90, 80, 60);
+        ctx.fillStyle = '#1e5a8a';
+        ctx.fillRect(280, 150, 80, 80);
+        // 液平线
+        ctx.strokeStyle = '#4fc3f7';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(275, 150);
+        ctx.lineTo(365, 150);
+        ctx.stroke();
+        // 标注
+        ctx.fillStyle = '#4fc3f7';
+        ctx.font = '12px sans-serif';
+        ctx.fillText('R', 340, 40);
+        ctx.fillText('L', 40, 40);
+        ctx.fillStyle = '#90caf9';
+        ctx.font = '11px sans-serif';
+        ctx.fillText('气体', 330, 110);
+        ctx.fillText('液体', 330, 200);
+    }
+
+    function drawReadOrder(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        const steps = ['骨骼', '胸膜腔', '肺实质', '膈肌/纵隔'];
+        const colors = ['#e74c3c', '#f1c40f', '#2ecc71', '#3498db'];
+        const pulse = 0.5 + 0.5 * Math.sin(t * 0.006);
+        const activeIdx = Math.floor(t * 0.002) % 4;
+        steps.forEach((step, i) => {
+            const y = 60 + i * 55;
+            ctx.fillStyle = colors[i];
+            ctx.globalAlpha = (i === activeIdx) ? (0.4 + 0.5 * pulse) : 0.25;
+            ctx.beginPath();
+            ctx.roundRect(80, y - 20, 240, 40, 20);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#0a1a26';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.fillText(step, 140, y + 6);
+        });
+        ctx.fillStyle = '#90caf9';
+        ctx.font = '14px sans-serif';
+        ctx.fillText('系统读片顺序', 130, 40);
+    }
+
+    function drawMatchSummary(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        ctx.fillStyle = '#4fc3f7';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('影像征象 → 疾病', 110, 40);
+        const pairs = [
+            ['磨玻璃影', '肺挫伤'],
+            ['气液囊腔', '肺撕裂伤'],
+            ['纵隔移位', '张力性气胸'],
+            ['胸腔胃肠影', '外伤性膈疝']
+        ];
+        pairs.forEach((p, i) => {
+            const y = 80 + i * 50;
+            ctx.fillStyle = '#b0d4f0';
+            ctx.font = '14px sans-serif';
+            ctx.fillText(p[0], 60, y);
+            ctx.fillStyle = '#4fc3f7';
+            ctx.fillText('→', 200, y);
+            ctx.fillStyle = '#b0d4f0';
+            ctx.fillText(p[1], 240, y);
+            const alpha = 0.3 + 0.5 * Math.sin(t * 0.005 + i);
+            ctx.globalAlpha = alpha * 0.4;
+            ctx.fillStyle = '#4fc3f7';
+            ctx.fillRect(50, y - 18, 300, 30);
+            ctx.globalAlpha = 1;
+        });
+    }
+
+    function drawContusion(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        ctx.fillStyle = '#1e3a4f';
+        ctx.beginPath();
+        ctx.ellipse(200, 150, 140, 100, 0, 0, Math.PI * 2);
+        ctx.fill();
+        for (let i = 0; i < 6; i++) {
+            const x = 120 + i * 35 + Math.sin(t * 0.005 + i) * 8;
+            const y = 110 + (i % 3) * 35 + Math.cos(t * 0.004 + i) * 6;
+            const r = 30 + Math.sin(t * 0.006 + i) * 8;
+            const grd = ctx.createRadialGradient(x, y, 5, x, y, r);
+            grd.addColorStop(0, 'rgba(200,200,200,0.5)');
+            grd.addColorStop(1, 'rgba(200,200,200,0)');
+            ctx.fillStyle = grd;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.fillStyle = '#e0e0e0';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('磨玻璃影', 150, 250);
+    }
+
+    function drawDiaphragmHernia(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        ctx.strokeStyle = '#b0c4de';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(60, 190);
+        ctx.quadraticCurveTo(200, 170, 340, 190);
+        ctx.stroke();
+        ctx.save();
+        ctx.strokeStyle = '#ff5252';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(120, 182);
+        ctx.lineTo(155, 175);
+        ctx.stroke();
+        ctx.restore();
+        const offset = Math.sin(t * 0.01) * 3;
+        ctx.fillStyle = '#e67e22';
+        ctx.beginPath();
+        ctx.ellipse(170 + offset, 130, 38, 28, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#f1c40f';
+        ctx.beginPath();
+        ctx.ellipse(170 + offset, 125, 22, 14, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ecf0f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(170 + offset, 130);
+        ctx.lineTo(170 + offset, 240);
+        ctx.stroke();
+        ctx.fillStyle = '#e67e22';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('胃疝入', 140, 90);
+    }
+
+    function drawLaceration(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        ctx.fillStyle = '#1e3a4f';
+        ctx.beginPath();
+        ctx.ellipse(200, 150, 130, 95, 0, 0, Math.PI * 2);
+        ctx.fill();
+        const pulse = 1 + Math.sin(t * 0.008) * 0.1;
+        ctx.fillStyle = '#2e5a7a';
+        ctx.beginPath();
+        ctx.arc(160, 120, 25 * pulse, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.arc(160, 126, 22 * pulse, 0, Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#2e5a7a';
+        ctx.beginPath();
+        ctx.arc(240, 170, 20 * pulse, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#3498db';
+        ctx.beginPath();
+        ctx.arc(240, 175, 17 * pulse, 0, Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#4fc3f7';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.fillText('气液囊腔', 140, 250);
+    }
+
+    function drawCTReconstruction(t) {
+        const w = 400, h = 300;
+        drawBackground(w, h);
+        ctx.fillStyle = '#1e3a4f';
+        ctx.fillRect(40, 60, 150, 180);
+        ctx.strokeStyle = '#4a6a8a';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 6; i++) {
+            const y = 80 + i * 25;
+            ctx.beginPath();
+            ctx.moveTo(50, y);
+            ctx.lineTo(180, y + Math.sin(i) * 5);
+            ctx.stroke();
+        }
+        ctx.fillStyle = '#2a4a6a';
+        ctx.fillRect(220, 60, 150, 180);
+        ctx.strokeStyle = '#b0c4de';
+        ctx.lineWidth = 4;
+        for (let i = 0; i < 5; i++) {
+            const y = 80 + i * 30;
+            ctx.beginPath();
+            ctx.moveTo(230, y);
+            ctx.lineTo(360, y + 5);
+            ctx.stroke();
+            if (i === 2) {
+                ctx.save();
+                ctx.strokeStyle = '#ff5252';
+                ctx.lineWidth = 6;
+                ctx.shadowColor = '#ff5252';
+                ctx.shadowBlur = 12;
+                ctx.beginPath();
+                ctx.moveTo(295, y);
+                ctx.lineTo(300, y + 10);
+                ctx.stroke();
+                ctx.restore();
+            }
+        }
+        ctx.fillStyle = '#90caf9';
+        ctx.font = '13px sans-serif';
+        ctx.fillText('平扫（易漏诊）', 50, 45);
+        ctx.fillText('三维重建（清晰）', 240, 45);
+        ctx.fillStyle = '#ff5252';
+        ctx.font = 'bold 13px sans-serif';
+        ctx.fillText('骨折', 285, 70);
+    }
+
+    function startAnimation(type) {
+        stopAnimation();
+        let lastTime = performance.now();
+        function loop(now) {
+            const t = now - lastTime;
+            animTime += 16;
+            if (type === 'rib_fracture') drawRibFracture(animTime);
+            else if (type === 'tension_pneumo') drawTensionPneumo(animTime);
+            else if (type === 'ct_pneumo') drawCTPneumo(animTime);
+            else if (type === 'ct_hydro') drawCTHydro(animTime);
+            else if (type === 'read_order') drawReadOrder(animTime);
+            else if (type === 'match_summary') drawMatchSummary(animTime);
+            else if (type === 'contusion') drawContusion(animTime);
+            else if (type === 'diaphragm_hernia') drawDiaphragmHernia(animTime);
+            else if (type === 'laceration') drawLaceration(animTime);
+            else if (type === 'ct_reconstruction') drawCTReconstruction(animTime);
+            animFrame = requestAnimationFrame(loop);
+        }
+        animFrame = requestAnimationFrame(loop);
+    }
+
+    // ==================== 界面 ====================
+    function hideAll() {
+        loginBox.style.display = 'none';
+        gameArea.classList.remove('active');
+        leaderboardPanel.classList.remove('active');
+    }
+    function showLogin() {
+        hideAll();
+        loginBox.style.display = 'block';
+        sidInput.value = '';
+        loginError.textContent = '';
+        sidInput.focus();
+        stopAnimation();
+    }
+    function showGame() {
+        hideAll();
+        gameArea.classList.add('active');
+    }
+    function showLeaderboard(isTeacher) {
+        hideAll();
+        leaderboardPanel.classList.add('active');
+        stopAnimation();
+
+        const sorted = getSortedRecords();
+        if (isTeacher) {
+            teacherStats.classList.add('show');
+            rankTitle.textContent = '👩‍🏫 教师视图 · 全班数据';
+            totalStudentsSpan.textContent = sorted.length;
+            if (sorted.length > 0) {
+                const totalCorrect = sorted.reduce((s, r) => s + r.correct, 0);
+                const totalQ = sorted.reduce((s, r) => s + r.total, 0);
+                avgAccuracySpan.textContent = totalQ > 0 ? (totalCorrect / totalQ * 100).toFixed(1) + '%' : '0%';
+            } else {
+                avgAccuracySpan.textContent = '0%';
+            }
+        } else {
+            teacherStats.classList.remove('show');
+            rankTitle.textContent = '🏅 学生排行榜';
+        }
+
+        rankList.innerHTML = '';
+        if (sorted.length === 0) {
+            rankList.innerHTML = '<div style="padding:20px;text-align:center;color:#6b8aa8;">暂无记录，快来成为第一个吧！</div>';
+        } else {
+            sorted.forEach((r, i) => {
+                const div = document.createElement('div');
+                div.className = 'rank-item';
+                if (r.studentId === currentStudentId && !isTeacher) div.classList.add('highlight-me');
+                let medal = i === 0 ? '🥇 ' : i === 1 ? '🥈 ' : i === 2 ? '🥉 ' : '';
+                div.innerHTML = `
+                    <span class="rank">${medal}${i + 1}</span>
+                    <span class="sid">${r.studentId} 号</span>
+                    <span class="score">${r.correct} / ${r.total}</span>
+                `;
+                rankList.appendChild(div);
+            });
+        }
+
+        againBtn.onclick = () => {
+            if (currentStudentId === '00') startQuiz('00');
+            else startQuiz(currentStudentId);
+        };
+        backBtn.onclick = showLogin;
+    }
+
+    // ==================== 答题 ====================
+    function startQuiz(sid) {
+        currentStudentId = sid;
+        currentQIndex = 0;
+        currentScore = 0;
+        userAnswers = [];
+        answeredCurrent = false;
+        showGame();
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const q = questions[currentQIndex];
+        const total = totalQuestions;
+
+        progressFill.style.width = ((currentQIndex) / total * 100) + '%';
+        qCounter.textContent = `第 ${currentQIndex + 1} / ${total} 题`;
+        scoreDisplay.textContent = `得分: ${currentScore}`;
+
+        questionText.textContent = q.q;
+        answerArea.innerHTML = '';
+        feedbackArea.classList.remove('show');
+        nextBtn.classList.add('hidden');
+        answeredCurrent = false;
+
+        sceneTitle.textContent = q.hint || '影像动画';
+        startAnimation(q.animType);
+
+        if (q.type === 'choice') renderChoice(q);
+        else if (q.type === 'hotspot') renderHotspot(q);
+        else if (q.type === 'sort') renderSort(q);
+        else if (q.type === 'match') renderMatch(q);
+        else if (q.type === 'drag') renderDrag(q);
+    }
+
+    // ---------- 选择题 ----------
+    function renderChoice(q) {
+        const letters = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `<span class="option-prefix">${letters[idx]}</span> ${opt}`;
+            btn.addEventListener('click', () => {
+                if (answeredCurrent) return;
+                answeredCurrent = true;
+                const isCorrect = idx === q.answer;
+                const allBtns = answerArea.querySelectorAll('.option-btn');
+                allBtns.forEach((b, i) => {
+                    b.disabled = true;
+                    if (i === q.answer) b.classList.add('correct');
+                    else if (i === idx && !isCorrect) b.classList.add('wrong');
+                });
+                userAnswers.push(isCorrect);
+                if (isCorrect) { currentScore++; scoreDisplay.textContent = `得分: ${currentScore}`; }
+                showFeedback(q.explain);
+                finishQuestion();
+            });
+            answerArea.appendChild(btn);
+        });
+    }
+
+    // ---------- 点击热点题 ----------
+    function renderHotspot(q) {
+        // 在canvas上生成热点按钮
+        const wrap = canvasWrap;
+        hotspotElements.forEach(el => el.remove());
+        hotspotElements = [];
+
+        q.hotspots.forEach((hs, idx) => {
+            const btn = document.createElement('div');
+            btn.className = 'hotspot-btn';
+            btn.textContent = '?';
+            // 位置基于canvas相对坐标
+            btn.style.left = (hs.x * 100) + '%';
+            btn.style.top = (hs.y * 100) + '%';
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (answeredCurrent) return;
+                answeredCurrent = true;
+                // 标记所有热点
+                hotspotElements.forEach((el, i) => {
+                    el.style.pointerEvents = 'none';
+                    if (q.hotspots[i].correct) {
+                        el.classList.add('correct');
+                        el.textContent = '✓';
+                    } else {
+                        el.classList.add('wrong');
+                        el.textContent = '✗';
+                    }
+                });
+                const isCorrect = hs.correct;
+                userAnswers.push(isCorrect);
+                if (isCorrect) { currentScore++; scoreDisplay.textContent = `得分: ${currentScore}`; }
+                showFeedback(q.explain + (isCorrect ? ' ✅ 点击正确！' : ' ❌ 位置不对，正确答案已标出。'));
+                finishQuestion();
+            });
+            wrap.appendChild(btn);
+            hotspotElements.push(btn);
+        });
+
+        // 提示
+        const hint = document.createElement('div');
+        hint.className = 'visual-hint';
+        hint.textContent = '👆 点击图中闪烁的问号，选择正确位置';
+        answerArea.appendChild(hint);
+    }
+
+    // ---------- 拖拽标记题 ----------
+    function renderDrag(q) {
+        const wrap = canvasWrap;
+        // 创建目标区域
+        const region = q.targetRegion;
+        dropTargetEl = document.createElement('div');
+        dropTargetEl.className = 'drop-target';
+        dropTargetEl.style.left = (region.x * 100) + '%';
+        dropTargetEl.style.top = (region.y * 100) + '%';
+        dropTargetEl.style.width = (region.width * 100) + '%';
+        dropTargetEl.style.height = (region.height * 100) + '%';
+        dropTargetEl.style.pointerEvents = 'none';
+        wrap.appendChild(dropTargetEl);
+
+        // 创建拖拽标签
+        dragLabelEl = document.createElement('div');
+        dragLabelEl.className = 'drag-label';
+        dragLabelEl.textContent = q.labelText;
+        dragLabelEl.style.left = '50%';
+        dragLabelEl.style.top = '90%';
+        dragLabelEl.style.transform = 'translate(-50%, -50%)';
+        dragLabelEl.style.position = 'absolute';
+        dragLabelEl.style.touchAction = 'none';
+        wrap.appendChild(dragLabelEl);
+
+        // 拖拽逻辑
+        isDragging = false;
+        let startX = 0, startY = 0;
+        let labelX = 0, labelY = 0;
+
+        function getCanvasRect() {
+            return canvas.getBoundingClientRect();
+        }
+
+        function onStart(e) {
+            if (answeredCurrent) return;
+            e.preventDefault();
+            isDragging = true;
+            const touch = e.touches ? e.touches[0] : e;
+            startX = touch.clientX;
+            startY = touch.clientY;
+            const rect = getCanvasRect();
+            const labelRect = dragLabelEl.getBoundingClientRect();
+            labelX = labelRect.left - rect.left;
+            labelY = labelRect.top - rect.top;
+            dragLabelEl.style.cursor = 'grabbing';
+        }
+
+        function onMove(e) {
+            if (!isDragging || answeredCurrent) return;
+            e.preventDefault();
+            const touch = e.touches ? e.touches[0] : e;
+            const dx = touch.clientX - startX;
+            const dy = touch.clientY - startY;
+            const rect = getCanvasRect();
+            const newLeft = labelX + dx;
+            const newTop = labelY + dy;
+            dragLabelEl.style.left = (newLeft / rect.width * 100) + '%';
+            dragLabelEl.style.top = (newTop / rect.height * 100) + '%';
+
+            // 检查是否悬停在目标区域
+            const targetRect = dropTargetEl.getBoundingClientRect();
+            const labelRect = dragLabelEl.getBoundingClientRect();
+            const centerX = labelRect.left + labelRect.width / 2;
+            const centerY = labelRect.top + labelRect.height / 2;
+            const isOver = centerX >= targetRect.left && centerX <= targetRect.right &&
+                           centerY >= targetRect.top && centerY <= targetRect.bottom;
+            dropTargetEl.classList.toggle('hover', isOver);
+        }
+
+        function onEnd(e) {
+            if (!isDragging || answeredCurrent) return;
+            isDragging = false;
+            dragLabelEl.style.cursor = 'grab';
+            const targetRect = dropTargetEl.getBoundingClientRect();
+            const labelRect = dragLabelEl.getBoundingClientRect();
+            const centerX = labelRect.left + labelRect.width / 2;
+            const centerY = labelRect.top + labelRect.height / 2;
+            const isOver = centerX >= targetRect.left && centerX <= targetRect.right &&
+                           centerY >= targetRect.top && centerY <= targetRect.bottom;
+
+            if (isOver) {
+                answeredCurrent = true;
+                dropTargetEl.classList.add('filled');
+                dropTargetEl.classList.remove('hover');
+                // 吸附到目标中心
+                const wrapRect = getCanvasRect();
+                dragLabelEl.style.left = ((targetRect.left - wrapRect.left + targetRect.width / 2) / wrapRect.width * 100) + '%';
+                dragLabelEl.style.top = ((targetRect.top - wrapRect.top + targetRect.height / 2) / wrapRect.height * 100) + '%';
+                userAnswers.push(true);
+                currentScore++;
+                scoreDisplay.textContent = `得分: ${currentScore}`;
+                showFeedback(q.explain + ' ✅ 位置正确！');
+                finishQuestion();
+            } else {
+                // 弹回原位
+                dragLabelEl.style.left = '50%';
+                dragLabelEl.style.top = '90%';
+                dropTargetEl.classList.remove('hover');
+            }
+        }
+
+        dragLabelEl.addEventListener('mousedown', onStart);
+        dragLabelEl.addEventListener('touchstart', onStart, { passive: false });
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('mouseup', onEnd);
+        document.addEventListener('touchend', onEnd);
+
+        // 提示
+        const hint = document.createElement('div');
+        hint.className = 'visual-hint';
+        hint.textContent = '👆 拖动「液平」标签到图像上的正确位置';
+        answerArea.appendChild(hint);
+    }
+
+    // ---------- 排序题 ----------
+    function renderSort(q) {
+        sortOrder = q.items.map((_, i) => i);
+        for (let i = sortOrder.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [sortOrder[i], sortOrder[j]] = [sortOrder[j], sortOrder[i]];
+        }
+
+        const container = document.createElement('div');
+        container.className = 'sort-container';
+        container.id = 'sortContainer';
+
+        function renderItems() {
+            container.innerHTML = '';
+            sortOrder.forEach((itemIdx, pos) => {
+                const item = document.createElement('div');
+                item.className = 'sort-item';
+                item.draggable = true;
+                item.dataset.index = itemIdx;
+                item.dataset.pos = pos;
+                item.innerHTML = `
+                    <span class="handle">⋮⋮</span>
+                    <span class="num">${pos + 1}</span>
+                    <span>${q.items[itemIdx]}</span>
+                `;
+                item.addEventListener('dragstart', (e) => {
+                    if (answeredCurrent) { e.preventDefault(); return; }
+                    e.dataTransfer.setData('text/plain', pos);
+                    item.classList.add('dragging');
+                });
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('dragging');
+                    document.querySelectorAll('.sort-item').forEach(el => el.classList.remove('drag-over'));
+                });
+                item.addEventListener('dragover', (e) => { e.preventDefault(); item.classList.add('drag-over'); });
+                item.addEventListener('dragleave', () => { item.classList.remove('drag-over'); });
+                item.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    if (answeredCurrent) return;
+                    const fromPos = parseInt(e.dataTransfer.getData('text/plain'));
+                    const toPos = parseInt(item.dataset.pos);
+                    if (fromPos === toPos) return;
+                    const temp = sortOrder[fromPos];
+                    sortOrder[fromPos] = sortOrder[toPos];
+                    sortOrder[toPos] = temp;
+                    renderItems();
+                });
+                container.appendChild(item);
+            });
+        }
+        renderItems();
+        answerArea.appendChild(container);
+
+        const submitBtn = document.createElement('button');
+        submitBtn.className = 'btn small';
+        submitBtn.textContent = '✅ 提交排序';
+        submitBtn.style.marginTop = '10px';
+        submitBtn.addEventListener('click', () => {
+            if (answeredCurrent) return;
+            answeredCurrent = true;
+            const isCorrect = sortOrder.every((val, idx) => val === q.correctOrder[idx]);
+            userAnswers.push(isCorrect);
+            if (isCorrect) { currentScore++; scoreDisplay.textContent = `得分: ${currentScore}`; }
+            showFeedback(q.explain);
+            const correctText = q.correctOrder.map(i => q.items[i]).join(' → ');
+            feedbackArea.innerHTML += `<br>✅ 正确顺序：${correctText}`;
+            finishQuestion();
+        });
+        answerArea.appendChild(submitBtn);
+    }
+
+    // ---------- 连线题 ----------
+    function renderMatch(q) {
+        selectedLeft = null;
+        matchedPairs = new Set();
+
+        const container = document.createElement('div');
+        container.className = 'match-container';
+
+        const leftCol = document.createElement('div');
+        leftCol.className = 'match-col';
+        leftCol.id = 'matchLeft';
+        q.leftItems.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = 'match-item';
+            div.textContent = item;
+            div.dataset.idx = idx;
+            div.addEventListener('click', () => {
+                if (answeredCurrent || matchedPairs.has(idx)) return;
+                document.querySelectorAll('#matchLeft .match-item').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected');
+                selectedLeft = idx;
+            });
+            leftCol.appendChild(div);
+        });
+
+        const rightCol = document.createElement('div');
+        rightCol.className = 'match-col';
+        rightCol.id = 'matchRight';
+        q.rightItems.forEach((item, idx) => {
+            const div = document.createElement('div');
+            div.className = 'match-item';
+            div.textContent = item;
+            div.dataset.idx = idx;
+            div.addEventListener('click', () => {
+                if (answeredCurrent) return;
+                if (selectedLeft === null) {
+                    alert('请先点击左侧的影像征象！');
+                    return;
+                }
+                const isCorrect = (selectedLeft === idx);
+                if (isCorrect) {
+                    matchedPairs.add(selectedLeft);
+                    const leftEl = document.querySelector(`#matchLeft .match-item[data-idx="${selectedLeft}"]`);
+                    if (leftEl) { leftEl.classList.remove('selected'); leftEl.classList.add('matched'); }
+                    div.classList.add('matched');
+                    selectedLeft = null;
+                    if (matchedPairs.size === q.leftItems.length) {
+                        answeredCurrent = true;
+                        userAnswers.push(true);
+                        currentScore++;
+                        scoreDisplay.textContent = `得分: ${currentScore}`;
+                        showFeedback(q.explain);
+                        finishQuestion();
+                    }
+                } else {
+                    div.classList.add('wrong-match');
+                    setTimeout(() => div.classList.remove('wrong-match'), 600);
+                }
+            });
+            rightCol.appendChild(div);
+        });
+
+        container.appendChild(leftCol);
+        container.appendChild(rightCol);
+        answerArea.appendChild(container);
+
+        const status = document.createElement('div');
+        status.className = 'match-status';
+        status.textContent = '点击左侧征象，再点击右侧疾病进行配对';
+        answerArea.appendChild(status);
+    }
+
+    // ---------- 通用 ----------
+    function showFeedback(text) {
+        feedbackArea.innerHTML = `📘 ${text}`;
+        feedbackArea.classList.add('show');
+        canvas.classList.add('flash');
+        setTimeout(() => canvas.classList.remove('flash'), 800);
+    }
+
+    function finishQuestion() {
+        if (currentQIndex === totalQuestions - 1) {
+            nextBtn.textContent = '📊 查看排行榜';
+        } else {
+            nextBtn.textContent = '下一题 ➡️';
+        }
+        nextBtn.classList.remove('hidden');
+    }
+
+    function goNext() {
+        stopAnimation();
+        if (currentQIndex < totalQuestions - 1) {
+            currentQIndex++;
+            renderQuestion();
+        } else {
+            if (currentStudentId !== '00') {
+                saveRecord(currentStudentId, currentScore, totalQuestions);
+            }
+            showLeaderboard(currentStudentId === '00');
+        }
+    }
+
+    // ==================== 事件 ====================
+    startBtn.addEventListener('click', () => {
+        const raw = sidInput.value.trim();
+        if (!/^\d{2}$/.test(raw)) {
+            loginError.textContent = '请输入两位数字学号（如 01, 23, 99）';
+            return;
+        }
+        loginError.textContent = '';
+        startQuiz(raw);
+    });
+
+    teacherBtn.addEventListener('click', () => {
+        currentStudentId = '00';
+        showLeaderboard(true);
+    });
+
+    sidInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') startBtn.click();
+    });
+
+    nextBtn.addEventListener('click', goNext);
+
+    showLogin();
+})();
+</script>
+</body>
+</html>
